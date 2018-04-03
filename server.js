@@ -21,7 +21,7 @@ const db = mongoose.connection;
 
 const app = express();
 
-const port = 3000;
+const port = process.env.PORT || 8080;
 const users = require('./routes/users');
 const products = require('./routes/products');
 
@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
     res.send('Hello');
 });
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', port);
 
 app.listen(app.get('port'), () => {
 	console.log('Server started on port ' + app.get('port') + '...');
