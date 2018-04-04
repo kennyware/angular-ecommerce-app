@@ -55,6 +55,10 @@ router.get('*', function (req, res, next) {
  
 module.exports = router;
 
+app.get('/', (req, res) => {
+    res.send('Hello');
+});
+
 app.set('port', port);
 
 app.listen(app.get('port'), () => {
