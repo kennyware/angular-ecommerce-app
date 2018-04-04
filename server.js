@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // Set Static Folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 // Init Passport
 app.use(passport.initialize());
@@ -45,18 +45,9 @@ require('./config/passport')(passport);
 app.use('/users', users);
 app.use('/products', products)
 
-// serve angular front end files from root path
-router.use('/', express.static('a4ecommerce', { redirect: false }));
- 
-// rewrite virtual urls to angular app to enable refreshing of internal pages
-router.get('*', function (req, res, next) {
-    res.sendFile(path.resolve('a4ecommerce/src/index.html'));
-});
- 
-module.exports = router;
 
-app.get('/', (req, res) => {
-    res.send('Hello');
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
 app.set('port', port);
