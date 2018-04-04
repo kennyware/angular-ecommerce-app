@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
@@ -33,7 +32,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // Set Static Folder
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Init Passport
 app.use(passport.initialize());
@@ -45,9 +44,12 @@ require('./config/passport')(passport);
 app.use('/users', users);
 app.use('/products', products)
 
+app.get('/', (req, res) => {
+    res.send('Hello');
+});
 
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/index.html'));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.set('port', port);
