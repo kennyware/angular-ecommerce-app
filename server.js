@@ -45,10 +45,10 @@ app.use('/users', users);
 app.use('/products', products)
 
 // serve angular front end files from root path
-router.use('/', express.static('app', { redirect: false }));
+app.use('/', express.static('a4ecommerce', { redirect: false }));
  
 // rewrite virtual urls to angular app to enable refreshing of internal pages
-router.get('*', function (req, res, next) {
+app.get('*', function (req, res, next) {
     res.sendFile(path.resolve('a4ecommerce/index.html'));
 });
 
