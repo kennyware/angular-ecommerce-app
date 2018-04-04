@@ -1,4 +1,5 @@
 const express = require('express');
+const router = express.Router();
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
@@ -45,12 +46,14 @@ app.use('/users', users);
 app.use('/products', products)
 
 // serve angular front end files from root path
-app.use('/', express.static('a4ecommerce', { redirect: false }));
+router.use('/', express.static('a4ecommerce', { redirect: false }));
  
 // rewrite virtual urls to angular app to enable refreshing of internal pages
-app.get('*', function (req, res, next) {
-    res.sendFile(path.resolve('a4ecommerce/index.html'));
+router.get('*', function (req, res, next) {
+    res.sendFile(path.resolve('a4ecommerce/src/index.html'));
 });
+ 
+module.exports = router;
 
 app.set('port', port);
 
