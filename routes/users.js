@@ -57,17 +57,38 @@ router.post('/register',
     });
 
     if(!errors.isEmpty()){
-        console.log(errors.array());
-        return res.status(400).send(errors.array());
+        return res.json({success: false, msg: errors.array()[0].msg});
     }
 
-    User.createUser(newUser, (err, user) => {
-        if(err){
-            return res.json({success: false, msg: 'Failed to create user.'});
-        } else{
-            return res.json({success: true, msg: 'User registered'});
+    User.getUserByUsername(newUser.username, (err, username) => {
+        if(err) {
+            throw err;
         }
+
+        if(username) {
+            return res.json({success: false, msg: 'Username is already in use.'})
+        }
+
+        User.getUserByEmail(newUser.email, (error, email) => {
+            if(error) {
+                throw error;
+            }
+    
+            if(email) {
+                return res.json({success: false, msg: 'Email is already registered.'})
+            }
+
+            User.createUser(newUser, (errors, user) => {
+                if(errors){
+                    return res.json({success: false, msg: 'Failed to create user.'});
+                } else{
+                    return res.json({success: true, msg: 'User registered'});
+                }
+            });
+        });
     });
+
+    
 });
 
 // PUT http://localhost:3000/users/:id
@@ -95,7 +116,7 @@ router.put('/:_id', passport.authenticate('jwt', {session: false}), [
     });
 
     if(!errors.isEmpty()){
-        return res.status(400).send(errors.array());
+        return res.json({success: false, msg: errors.array()[0].msg});
     }
     
     User.updateUser(req.params._id, updatedUser, (err) => {
