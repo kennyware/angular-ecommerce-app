@@ -10,7 +10,7 @@ const d = new Date();
 const { check, validationResult } = require('express-validator/check');
 const { matchedData, sanitize } = require('express-validator/filter');
 
-// GET http://localhost:3000/users
+// GET http://localhost:8080/users
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     User.find({}, (err, users) => {
         if(err) throw err;
@@ -19,7 +19,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
     });
 });
 
-// GET http://localhost:3000/users/:_id
+// GET http://localhost:8080/users/:_id
 router.get('/:_id', passport.authenticate('jwt', { session: false }), (req, res) => {
     User.findById(req.params._id, (err, user) => {
         if(err) throw err;
@@ -28,7 +28,7 @@ router.get('/:_id', passport.authenticate('jwt', { session: false }), (req, res)
     });
 });
 
-// POST http://localhost:3000/users/register
+// POST http://localhost:8080/users/register
 router.post('/register',
 [
         check('username', 'Username is required.').exists().not().isEmpty(),
@@ -91,7 +91,7 @@ router.post('/register',
     
 });
 
-// PUT http://localhost:3000/users/:id
+// PUT http://localhost:8080/users/:id
 router.put('/:_id', passport.authenticate('jwt', {session: false}), [
     check('username', 'Username is required.').exists().not().isEmpty(),
     check('email', 'Email is required.').exists().not().isEmpty(),
@@ -128,7 +128,7 @@ router.put('/:_id', passport.authenticate('jwt', {session: false}), [
     });
 });
 
-// POST http://localhost:3000/users/authenticate
+// POST http://localhost:8080/users/authenticate
 router.post('/authenticate', (req, res, next) => {
     const username = req.body.username.toLowerCase();
     const password = req.body.password;
@@ -162,7 +162,7 @@ router.post('/authenticate', (req, res, next) => {
     });
 });
 
-// DELETE http://localhost:3000/users/:_id
+// DELETE http://localhost:8080/users/:_id
 router.delete('/:_id', passport.authenticate('jwt', { session: false }), (req, res) => {
     User.removeUser(req.params._id, (err, result) => {
         if(err) throw err;
@@ -173,7 +173,7 @@ router.delete('/:_id', passport.authenticate('jwt', { session: false }), (req, r
 
 /* Admin Routes */
 
-// POST http://localhost:3000/users/admin/register
+// POST http://localhost:8080/users/admin/register
 router.post('/admin/register',
 [
         check('username', 'Username is required.').exists().not().isEmpty(),
@@ -204,7 +204,7 @@ router.post('/admin/register',
     });
 });
 
-// POST http://localhost:3000/users/admin/login
+// POST http://localhost:8080/users/admin/login
 router.post('/admin/login', (req, res, next) => {
     const username = req.body.username.toLowerCase();
     const password = req.body.password;

@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const Product = require('../models/product');
 
-// GET http://localhost:3000/products
+// GET http://localhost:8080/products
 router.get('/', (req, res) => {
         Product.find((err, products) => {
             if(err) throw err;
@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
         });
 });
 
-// GET http://localhost:3000/products/:id
+// GET http://localhost:8080/products/:id
 router.get('/:_id', (req, res) => {
     Product.getProductById(req.params._id, (err, product) => {
         if(err){
@@ -24,7 +24,7 @@ router.get('/:_id', (req, res) => {
     });
 });
 
-// POST http://localhost:3000/products
+// POST http://localhost:8080/products
 router.post('/', (req, res) => {
     let newProduct = new Product({
         product_name: req.body.product_name,
@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
         if(err) throw err;
 
         if(!user) {
-            return res.json({msg: 'User undefined.'});
+            return res.json({msg: 'Unauthorized Access.'});
         }
 
         if(user.username != 'masteraccount'){
@@ -56,7 +56,7 @@ router.post('/', (req, res) => {
     })(req, res);
 });
 
-// PUT http://localhost:3000/products/:_id
+// PUT http://localhost:8080/products/:_id
 router.put('/:_id', (req, res) => {
     let updatedProduct = new Product({
         product_name: req.body.product_name,
@@ -71,11 +71,11 @@ router.put('/:_id', (req, res) => {
         if(err) throw err;
 
         if(!user) {
-            return res.json({msg: 'User undefined.'});
+            return res.json({msg: 'Unauthorized'});
         }
 
         if(user.username != 'masteraccount'){
-            return res.json({msg: 'Unauthorized Access.'});
+            return res.json({msg: 'Unauthorized'});
         }
 
         Product.updateProduct(req.params._id, updatedProduct, (err) => {
@@ -88,17 +88,17 @@ router.put('/:_id', (req, res) => {
     })(req, res);   
 });
 
-// DELETE http://localhost:3000/products/:_id
+// DELETE http://localhost:8080/products/:_id
 router.delete('/:_id', (req, res) => {
     passport.authenticate('jwt', (err, user) => {
         if(err) throw err;
 
         if(!user) {
-            return res.json({msg: 'User undefined.'});
+            return res.json({msg: 'Unauthorized'});
         }
 
         if(user.username != 'masteraccount'){
-            return res.json({msg: 'Unauthorized Access.'});
+            return res.json({msg: 'Unauthorized'});
         }
 
         Product.removeProduct(req.params._id, (err, product) => {
