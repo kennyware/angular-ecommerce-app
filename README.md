@@ -1,1 +1,1 @@
-# angular5-ecommerce-app
+# angular-ecommerce-app
